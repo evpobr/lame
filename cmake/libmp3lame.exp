@@ -1,5 +1,4 @@
 _lame_init
-_lame_init_old
 _lame_set_num_samples
 _lame_get_num_samples
 _lame_set_in_samplerate
