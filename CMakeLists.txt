@@ -159,7 +159,9 @@ if(BUILD_SHARED_LIBS)
         include/lame.def
         libmp3lame/lame.rc
     )
-  elseif(CMAKE_COMPILER_IS_GNUCC OR (CMAKE_C_COMPILER_ID STREQUAL "Clang"))
+  elseif(CMAKE_SYSTEM_NAME STREQUAL Darwin)
+    target_link_options(mp3lame PRIVATE LINKER:-exported_symbols_list,${PROJECT_SOURCE_DIR}/cmake/libmp3lame.exp)
+  elseif(UNIX AND (CMAKE_COMPILER_IS_GNUCC OR (CMAKE_C_COMPILER_ID STREQUAL "Clang")))
     target_link_options(mp3lame PRIVATE LINKER:--version-script,${PROJECT_SOURCE_DIR}/cmake/libmp3lame.ver)
   endif()
   if(MSVC)
