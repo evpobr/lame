@@ -1,0 +1,15 @@
+* text=auto
+
+*.ac text eol=lf
+*.am text eol=lf
+*.m4 text eol=lf
+*.pc text eol=lf
+*.spec text eol=lf
+*.spec.in text eol=lf
+*.sym text eol=lf
+*.sh text eol=lf
+
+*.bat text eol=crlf
+*.vcproj text eol=crlf
+*.vsprops text eol=crlf
+*.rules text eol=crlf
