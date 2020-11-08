@@ -1,4 +1,4 @@
-cmake_minimum_required(VERSION 3.1)
+cmake_minimum_required(VERSION 3.13)
 
 project(lame VERSION 3.100 LANGUAGES C)
 
@@ -160,7 +160,7 @@ if(BUILD_SHARED_LIBS)
         libmp3lame/lame.rc
     )
   elseif(CMAKE_COMPILER_IS_GNUCC OR (CMAKE_C_COMPILER_ID STREQUAL "Clang"))
-    target_link_options(mp3lame PRIVATE "LINKER:--version-script,${PROJECT_SOURCE_DIR}/include/libmp3lame.exp")
+    target_link_options(mp3lame PRIVATE LINKER:--version-script,${PROJECT_SOURCE_DIR}/cmake/libmp3lame.ver)
   endif()
   if(MSVC)
     set_property(TARGET mp3lame PROPERTY RUNTIME_OUTPUT_NAME libmp3lame)
