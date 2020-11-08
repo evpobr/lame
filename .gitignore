@@ -75,6 +75,7 @@ Makefile
 *.ilk
 *.map
 *.exp
+!cmake/*.exp
 
 # Precompiled Headers
 *.gch
