@@ -116,4 +116,21 @@ Module.symvers
 Mkfile.old
 dkms.conf
 
+CMakeCache.txt
+CMakeFiles
+CMakeScripts
+Testing
+Makefile
+cmake_install.cmake
+install_manifest.txt
+compile_commands.json
+CTestTestfile.cmake
+CMakeSettings.json
+
+/*[Bb]uild*/
+
+/.vscode/
+/.vs/
+/out/
+
 # End of https://www.toptal.com/developers/gitignore/api/autotools,c,assembler
