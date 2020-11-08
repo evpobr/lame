@@ -41,4 +41,3 @@ jobs:
           cd build
           cmake .. -G Ninja  -DCMAKE_VERBOSE_MAKEFILE=ON  -DBUILD_SHARED_LIBS=ON -DCMAKE_BUILD_TYPE=Release
           cmake --build . --config Release
-          ctest
