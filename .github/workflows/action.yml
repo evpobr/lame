@@ -1,0 +1,44 @@
+name: C/C++ CI
+
+on: [push, pull_request]
+
+jobs:
+  build:
+    strategy:
+      fail-fast: false
+      matrix:
+        name: [
+          ubuntu,
+          macos
+        ]
+        include:
+          - name: ubuntu
+            os: ubuntu-latest
+          - name: macos
+            os: macos-latest
+
+    runs-on: ${{ matrix.os }}
+
+    steps:
+
+      - uses: actions/checkout@v2
+
+      - name: Install MacOS dependencies
+        if: startsWith(matrix.os,'macos')
+        run: |
+          brew untap local/homebrew-openssl
+          brew untap local/homebrew-python2
+          brew update
+          brew install ninja
+
+      - name: Install Lunux dependencies
+        if: startsWith(matrix.os,'ubuntu')
+        run: sudo apt-get install -y ninja-build
+
+      - name: Configure, build and test with CMake
+        run: |
+          mkdir build
+          cd build
+          cmake .. -G Ninja  -DCMAKE_VERBOSE_MAKEFILE=ON  -DBUILD_SHARED_LIBS=ON -DCMAKE_BUILD_TYPE=Release
+          cmake --build . --config Release
+          ctest
