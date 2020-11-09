@@ -7,6 +7,9 @@
 #cmakedefine HAVE_LIMITS_H
 #cmakedefine HAVE_UNISTD_H
 
+#cmakedefine HAVE_TERMCAP_H
+#cmakedefine HAVE_NCURSES_TERMCAP_H
+
 #cmakedefine HAVE_NASM
 #cmakedefine MMX_choose_table
 #cmakedefine HAVE_XMMINTRIN_H

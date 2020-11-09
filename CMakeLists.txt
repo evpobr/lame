@@ -26,6 +26,9 @@ check_include_file(limits.h HAVE_LIMITS_H)
 check_include_file(unistd.h HAVE_UNISTD_H)
 check_include_file(fcntl.h HAVE_FCNTL_H)
 
+check_include_file(termcap.h HAVE_TERMCAP_H)
+check_include_file(ncurses/termcap.h HAVE_NCURSES_TERMCAP_H)
+
 check_type_size(int8_t INT8_T)
 check_type_size(int16_t INT16_T)
 check_type_size(int32_t INT32_T)
