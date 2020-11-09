@@ -8,6 +8,7 @@
 #cmakedefine HAVE_UNISTD_H
 
 #cmakedefine HAVE_NASM
+#cmakedefine MMX_choose_table
 #cmakedefine HAVE_XMMINTRIN_H
 
 #cmakedefine HAVE_INT8_T

@@ -41,8 +41,6 @@ if(CPU_TYPE_X86 OR CPU_TYPE_X64)
     check_include_file(xmmintrin.h HAVE_XMMINTRIN_H)
 endif()
 
-configure_file(cmake/config.h.cmake config.h)
-
 set(LIB_WITH_DECODER ON)
 
 include(CMakePackageConfigHelpers)
@@ -71,6 +69,7 @@ set(mpglib_SRCS
 )
 
 add_library(mp3lame
+  include/lame.h
   ${mpglib_SRCS}
   libmp3lame/VbrTag.c
   libmp3lame/bitstream.c
@@ -133,7 +132,23 @@ if(CPU_TYPE_X86 OR CPU_TYPE_X64)
     target_compile_definitions(mp3lame PRIVATE MIN_ARCH_SSE)
   endif()
 
-  enable_language(ASM_NASM)
+  # Try to use NASM
+  if(CPU_TYPE_X86)
+    enable_language(ASM_NASM)
+    list(APPEND CMAKE_ASM_NASM_SOURCE_FILE_EXTENSIONS nas)
+    if(CMAKE_ASM_NASM_COMPILER_WORKS)
+      set(HAVE_NASM 1)
+      set(MMX_choose_table 1)
+      target_sources(mp3lame
+        PRIVATE
+          libmp3lame/i386/nasm.h
+          libmp3lame/i386/choose_table.nas
+          libmp3lame/i386/cpu_feat.nas
+          libmp3lame/i386/fft3dn.nas
+          libmp3lame/i386/fftsse.nas
+      )
+    endif()
+  endif()
 endif()
 
 target_compile_definitions(mp3lame
@@ -180,10 +195,15 @@ if(BUILD_SHARED_LIBS)
   endif()
 endif()
 
+set_property(TARGET mp3lame PROPERTY PUBLIC_HEADER include/lame.h)
+
+configure_file(cmake/config.h.cmake config.h)
+
 install(TARGETS mp3lame EXPORT mp3lame-targets
   RUNTIME DESTINATION ${CMAKE_INSTALL_BINDIR}
   LIBRARY DESTINATION ${CMAKE_INSTALL_LIBDIR}
   ARCHIVE DESTINATION ${CMAKE_INSTALL_LIBDIR}
+  PUBLIC_HEADER DESTINATION ${CMAKE_INSTALL_INCLUDEDIR}
 )
 
 export(EXPORT mp3lame-targets NAMESPACE mp3lame:: FILE mp3lame-targets.cmake)
