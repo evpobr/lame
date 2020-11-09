@@ -195,6 +195,9 @@ if(BUILD_SHARED_LIBS)
   endif()
 endif()
 
+find_package(SndFile 1.0.2)
+find_package(Curses)
+
 set_property(TARGET mp3lame PROPERTY PUBLIC_HEADER include/lame.h)
 
 configure_file(cmake/config.h.cmake config.h)
@@ -226,4 +229,47 @@ install(
     ${CMAKE_CURRENT_BINARY_DIR}/mp3lame-config-version.cmake
   DESTINATION
     ${CMAKE_INSTALL_LIBDIR}/cmake/mp3lame
+)
+
+# lame encoder
+
+add_executable(lame
+  frontend/lame_main.c
+  frontend/main.c
+  frontend/main.h
+  frontend/brhist.c
+  frontend/brhist.h
+  frontend/console.c
+  frontend/console.h
+  frontend/get_audio.c
+  frontend/get_audio.h
+  frontend/lametime.c
+  frontend/lametime.h
+  frontend/parse.c
+  frontend/parse.h
+  frontend/timestatus.c
+  frontend/timestatus.h
+)
+target_compile_definitions(lame
+  PRIVATE
+    HAVE_CONFIG_H
+)
+target_include_directories(lame
+  PRIVATE
+    libmp3lame
+    ${PROJECT_BINARY_DIR}
+)
+target_link_libraries(lame PRIVATE mp3lame)
+if(SndFile_FOUND)
+  target_compile_definitions(lame PRIVATE LIBSNDFILE)
+  target_link_libraries(lame PRIVATE SndFile::sndfile)
+endif()
+if(CURSES_FOUND)
+  target_compile_definitions(lame PRIVATE HAVE_NCURSES_TERMCAP_H)
+  target_include_directories(lame PRIVATE ${CURSES_INCLUDE_DIRS})
+  target_link_libraries(lame PRIVATE ${CURSES_LIBRARIES})
+endif()
+
+install(TARGETS lame
+  RUNTIME DESTINATION ${CMAKE_INSTALL_BINDIR}
 )
