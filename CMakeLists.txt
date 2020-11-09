@@ -140,6 +140,7 @@ target_compile_definitions(mp3lame
   PRIVATE
     HAVE_CONFIG_H
     HAVE_MPGLIB
+    DECODE_ON_THE_FLY
 )
 if(MSVC)
   target_compile_definitions(mp3lame PRIVATE _CRT_SECURE_NO_WARNINGS)
