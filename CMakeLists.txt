@@ -117,15 +117,23 @@ add_library(mp3lame
 
 add_library(mp3lame::mp3lame ALIAS mp3lame)
 
-if(HAVE_XMMINTRIN_H)
-  target_sources(mp3lame
-      PRIVATE
-        libmp3lame/vector/xmm_quantize_sub.c
-        libmp3lame/vector/lame_intrin.h
+# Tune x86 and x86_64
+if(CPU_TYPE_X86 OR CPU_TYPE_X64)
+  target_compile_definitions(mp3lame
+    PRIVATE
+      USE_FAST_LOG
+      TAKEHIRO_IEEE754_HACK
   )
-  if(CPU_TYPE_X86)
+  if(HAVE_XMMINTRIN_H)
+    target_sources(mp3lame
+        PRIVATE
+          libmp3lame/vector/xmm_quantize_sub.c
+          libmp3lame/vector/lame_intrin.h
+    )
     target_compile_definitions(mp3lame PRIVATE MIN_ARCH_SSE)
   endif()
+
+  enable_language(ASM_NASM)
 endif()
 
 target_compile_definitions(mp3lame
