@@ -263,6 +263,7 @@ target_include_directories(lame
     ${PROJECT_BINARY_DIR}
 )
 target_link_libraries(lame PRIVATE mp3lame)
+target_link_libraries(lame PRIVATE $<$<BOOL:${HAVE_FLOOR_IN_M}>:${LIBM_LIBRARY}>)
 if(SndFile_FOUND)
   target_compile_definitions(lame PRIVATE LIBSNDFILE)
   target_link_libraries(lame PRIVATE SndFile::sndfile)
